@@ -49,37 +49,17 @@ include_once "fungsi.php";
     </head>
     <body>
         <!-- HEADER END-->
-        <div class="navbar navbar-inverse set-radius-zero">
+        <div class="navbar navbar-inverse" style="border-radius:0; margin-bottom:0;">
             <div class="container">
-                <div class="navbar-brand">
-                Klasifikasi Naïve Bayes
-                </div>
+            <span class="navbar-brand" style="font-weight:600; letter-spacing:1px;">Klasifikasi Naïve Bayes</span>
+            <ul class="nav navbar-nav navbar-right" style="margin-top:8px;">
+                <li><a href="index.php" style="color:#fff;">Beranda</a></li>
+                <?php if (empty($_SESSION['kepribadian_naive_bayes_id'])): ?>
+                <li><a class="menu-top-active" href="login.php" style="color:#fff;">Masuk</a></li>
+                <?php endif; ?>
+            </ul>
             </div>
         </div>
-
-        <!-- LOGO HEADER END-->
-        <section class="menu-section">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="navbar-collapse collapse ">
-                            <ul id="menu-top" class="nav navbar-nav navbar-right">
-                                <li><a  href="index.php">Beranda</a></li>
-                                <?php
-                                if (empty($_SESSION['kepribadian_naive_bayes_id'])) {
-                                    ?>
-                                    <li><a class='menu-top-active' href="login.php">Masuk</a></li>
-                                    <?php
-                                }
-                                ?>
-                            </ul>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-        <!-- MENU SECTION END-->
 
         <!-- MENU SECTION END-->
         <div class="content-wrapper">
