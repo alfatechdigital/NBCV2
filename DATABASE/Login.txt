@@ -1,0 +1,7 @@
+Admin
+user: admin
+pass: admin
+
+User
+user: cek di tabel user
+pass: sama dengan username
