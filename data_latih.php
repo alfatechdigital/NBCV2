@@ -123,22 +123,161 @@ include_once "import/excel_reader2.php";
                             <th>Jawaban C</th>
                             <th>Jawaban D</th>
                             <th>Kelas Asli</th>
+                            <th>opsi</th>
                         </tr>
                         <?php
                         $no = 1;
                         while ($row = $db_object->db_fetch_array($query)) {
-                            echo "<tr>";
-                            echo "<td>" . $no . "</td>";
-                            echo "<td>" . $row['nama'] . "</td>";
-                            echo "<td>" . $row['jenis_kelamin'] . "</td>";
-                            echo "<td>" . $row['usia'] . "</td>";
-                            echo "<td>" . $row['jurusan'] . "</td>";
-                            echo "<td>" . $row['jawaban_a'] . "</td>";
-                            echo "<td>" . $row['jawaban_b'] . "</td>";
-                            echo "<td>" . $row['jawaban_c'] . "</td>";
-                            echo "<td>" . $row['jawaban_d'] . "</td>";
-                            echo "<td>" . $row['kelas_asli'] . "</td>";
-                            echo "</tr>";
+                        ?>
+                        <tr>
+                            <td><?php echo $no; ?></td>
+                            <td><?php echo htmlspecialchars($row['nama']); ?></td>
+                            <td><?php echo htmlspecialchars($row['jenis_kelamin']); ?></td>
+                            <td><?php echo htmlspecialchars($row['usia']); ?></td>
+                            <td><?php echo htmlspecialchars($row['jurusan']); ?></td>
+                            <td><?php echo htmlspecialchars($row['jawaban_a']); ?></td>
+                            <td><?php echo htmlspecialchars($row['jawaban_b']); ?></td>
+                            <td><?php echo htmlspecialchars($row['jawaban_c']); ?></td>
+                            <td><?php echo htmlspecialchars($row['jawaban_d']); ?></td>
+                            <td><?php echo htmlspecialchars($row['kelas_asli']); ?></td>
+                            <td>
+                                <a href="?menu=data_latih&delete_id=<?php echo $row['id']; ?>" class="btn btn-danger btn-xs" onclick="return confirm('Yakin ingin menghapus data ini?');">Hapus</a>
+                                <!-- Tombol Edit yang memicu modal -->
+                                <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#editModal<?php echo $row['id']; ?>">
+                                    Edit
+                                </button>
+
+                                <!-- Modal Edit -->
+                                <div class="modal fade" id="editModal<?php echo $row['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel<?php echo $row['id']; ?>">
+                                  <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                      <form method="post" action="">
+                                        <div class="modal-header">
+                                          <h4 class="modal-title" id="editModalLabel<?php echo $row['id']; ?>">Edit Data Latih</h4>
+                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                          </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <input type="hidden" name="edit_id" value="<?php echo $row['id']; ?>">
+                                            <div class="form-group">
+                                                <label>Nama</label>
+                                                <input type="text" name="nama" class="form-control" value="<?php echo htmlspecialchars($row['nama']); ?>" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Jenis Kelamin</label>
+                                                <select name="jenis_kelamin" class="form-control" required>
+                                                    <option value="Laki-laki" <?php if($row['jenis_kelamin']=='Laki-laki') echo 'selected'; ?>>Laki-laki</option>
+                                                    <option value="Perempuan" <?php if($row['jenis_kelamin']=='Perempuan') echo 'selected'; ?>>Perempuan</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Usia</label>
+                                                <input type="number" name="usia" class="form-control" value="<?php echo $row['usia']; ?>" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Jurusan</label>
+                                                <input type="text" name="jurusan" class="form-control" value="<?php echo htmlspecialchars($row['jurusan']); ?>" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Jawaban A</label>
+                                                <input type="number" name="jawaban_a" class="form-control" value="<?php echo $row['jawaban_a']; ?>" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Jawaban B</label>
+                                                <input type="number" name="jawaban_b" class="form-control" value="<?php echo $row['jawaban_b']; ?>" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Jawaban C</label>
+                                                <input type="number" name="jawaban_c" class="form-control" value="<?php echo $row['jawaban_c']; ?>" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Jawaban D</label>
+                                                <input type="number" name="jawaban_d" class="form-control" value="<?php echo $row['jawaban_d']; ?>" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Kelas Asli</label>
+                                                <input type="text" name="kelas_asli" class="form-control" value="<?php echo htmlspecialchars($row['kelas_asli']); ?>" required>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                          <button type="submit" name="update_modal" class="btn btn-primary">Update</button>
+                                          <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                                        </div>
+                                      </form>
+                                    </div>
+                                  </div>
+                                </div>
+                                <?php
+                                // Proses update data dari modal
+                                if (isset($_POST['update_modal']) && isset($_POST['edit_id'])) {
+                                    $edit_id = intval($_POST['edit_id']);
+                                    $nama = $_POST['nama'];
+                                    // Konversi nilai jenis kelamin ke L/P
+                                    $jenis_kelamin_input = $_POST['jenis_kelamin'];
+                                    if ($jenis_kelamin_input === 'Laki-laki' || $jenis_kelamin_input === 'L') {
+                                        $jenis_kelamin = 'L';
+                                    } elseif ($jenis_kelamin_input === 'Perempuan' || $jenis_kelamin_input === 'P') {
+                                        $jenis_kelamin = 'P';
+                                    } else {
+                                        $jenis_kelamin = '';
+                                    }
+                                    $usia = intval($_POST['usia']);
+                                    $jurusan = $_POST['jurusan'];
+                                    $jawaban_a = intval($_POST['jawaban_a']);
+                                    $jawaban_b = intval($_POST['jawaban_b']);
+                                    $jawaban_c = intval($_POST['jawaban_c']);
+                                    $jawaban_d = intval($_POST['jawaban_d']);
+                                    $kelas_asli = $_POST['kelas_asli'];
+
+                                    if ($jenis_kelamin !== '') {
+                                        $sql_update = "UPDATE data_latih SET 
+                                            nama = '$nama',
+                                            jenis_kelamin = '$jenis_kelamin',
+                                            usia = $usia,
+                                            jurusan = '$jurusan',
+                                            jawaban_a = $jawaban_a,
+                                            jawaban_b = $jawaban_b,
+                                            jawaban_c = $jawaban_c,
+                                            jawaban_d = $jawaban_d,
+                                            kelas_asli = '$kelas_asli'
+                                            WHERE id = $edit_id";
+                                        $db_object->db_query($sql_update);
+                                        echo "<script>location.replace('?menu=data_latih&pesan_success=Data berhasil diupdate');</script>";
+                                        exit;
+                                    } else {
+                                        echo "<script>alert('Jenis kelamin tidak valid!');</script>";
+                                    }
+                                }
+                                ?>
+
+                                <script>
+                                // Untuk mengubah input kelas_asli menjadi dropdown pada modal edit
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    var modal = document.getElementById('editModal<?php echo $row['id']; ?>');
+                                    if (modal) {
+                                        var input = modal.querySelector('input[name="kelas_asli"]');
+                                        if (input) {
+                                            var select = document.createElement('select');
+                                            select.name = 'kelas_asli';
+                                            select.className = 'form-control';
+                                            var options = ['Sanguinis', 'Koleris', 'Melankolis', 'Plegmatis'];
+                                            options.forEach(function(opt) {
+                                                var option = document.createElement('option');
+                                                option.value = opt;
+                                                option.text = opt;
+                                                if (input.value === opt) option.selected = true;
+                                                select.appendChild(option);
+                                            });
+                                            input.parentNode.replaceChild(select, input);
+                                        }
+                                    }
+                                });
+                                </script>
+
+                            </td>
+                        </tr>
+                        <?php
                             $no++;
                         }
                         ?>
@@ -150,4 +289,98 @@ include_once "import/excel_reader2.php";
         </div>
     </div>
 </div>
+<?php
+// Proses hapus data berdasarkan id
+if (isset($_GET['delete_id'])) {
+    $delete_id = intval($_GET['delete_id']);
+    $sql = "DELETE FROM data_latih WHERE id = $delete_id";
+    $db_object->db_query($sql);
+    echo "<script>location.replace('?menu=data_latih&pesan_success=Data berhasil dihapus');</script>";
+    exit;
+}
+
+// Proses edit data
+if (isset($_GET['menu']) && $_GET['menu'] == 'edit_data_latih' && isset($_GET['id'])) {
+    $edit_id = intval($_GET['id']);
+    $sql = "SELECT * FROM data_latih WHERE id = $edit_id";
+    $result = $db_object->db_query($sql);
+    $edit_data = $db_object->db_fetch_array($result);
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
+        $nama = $_POST['nama'];
+        $jenis_kelamin = $_POST['jenis_kelamin'];
+        $usia = intval($_POST['usia']);
+        $jurusan = $_POST['jurusan'];
+        $jawaban_a = intval($_POST['jawaban_a']);
+        $jawaban_b = intval($_POST['jawaban_b']);
+        $jawaban_c = intval($_POST['jawaban_c']);
+        $jawaban_d = intval($_POST['jawaban_d']);
+        $kelas_asli = $_POST['kelas_asli'];
+
+        $sql_update = "UPDATE data_latih SET 
+            nama = '$nama',
+            jenis_kelamin = '$jenis_kelamin',
+            usia = $usia,
+            jurusan = '$jurusan',
+            jawaban_a = $jawaban_a,
+            jawaban_b = $jawaban_b,
+            jawaban_c = $jawaban_c,
+            jawaban_d = $jawaban_d,
+            kelas_asli = '$kelas_asli'
+            WHERE id = $edit_id";
+        $db_object->db_query($sql_update);
+        echo "<script>location.replace('?menu=data_latih&pesan_success=Data berhasil diupdate');</script>";
+        exit;
+    }
+    ?>
+    <div class="container">
+        <h4>Edit Data Latih</h4>
+        <form method="post" action="">
+            <div class="form-group">
+                <label>Nama</label>
+                <input type="text" name="nama" class="form-control" value="<?php echo htmlspecialchars($edit_data['nama']); ?>" required>
+            </div>
+            <div class="form-group">
+                <label>Jenis Kelamin</label>
+                <select name="jenis_kelamin" class="form-control" required>
+                    <option value="Laki-laki" <?php if($edit_data['jenis_kelamin']=='Laki-laki') echo 'selected'; ?>>Laki-laki</option>
+                    <option value="Perempuan" <?php if($edit_data['jenis_kelamin']=='Perempuan') echo 'selected'; ?>>Perempuan</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Usia</label>
+                <input type="number" name="usia" class="form-control" value="<?php echo $edit_data['usia']; ?>" required>
+            </div>
+            <div class="form-group">
+                <label>Jurusan</label>
+                <input type="text" name="jurusan" class="form-control" value="<?php echo htmlspecialchars($edit_data['jurusan']); ?>" required>
+            </div>
+            <div class="form-group">
+                <label>Jawaban A</label>
+                <input type="number" name="jawaban_a" class="form-control" value="<?php echo $edit_data['jawaban_a']; ?>" required>
+            </div>
+            <div class="form-group">
+                <label>Jawaban B</label>
+                <input type="number" name="jawaban_b" class="form-control" value="<?php echo $edit_data['jawaban_b']; ?>" required>
+            </div>
+            <div class="form-group">
+                <label>Jawaban C</label>
+                <input type="number" name="jawaban_c" class="form-control" value="<?php echo $edit_data['jawaban_c']; ?>" required>
+            </div>
+            <div class="form-group">
+                <label>Jawaban D</label>
+                <input type="number" name="jawaban_d" class="form-control" value="<?php echo $edit_data['jawaban_d']; ?>" required>
+            </div>
+            <div class="form-group">
+                <label>Kelas Asli</label>
+                <input type="text" name="kelas_asli" class="form-control" value="<?php echo htmlspecialchars($edit_data['kelas_asli']); ?>" required>
+            </div>
+            <button type="submit" name="update" class="btn btn-primary">Update</button>
+            <a href="?menu=data_latih" class="btn btn-default">Batal</a>
+        </form>
+    </div>
+    <?php
+    exit;
+}
+?>
 

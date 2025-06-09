@@ -49,18 +49,26 @@ include_once "fungsi.php";
     </head>
     <body>
         <!-- HEADER END-->
-        <div class="navbar navbar-inverse" style="border-radius:0; margin-bottom:0;">
+       <!-- <div class="navbar navbar-inverse" style="border-radius:0; margin-bottom:0;">
             <div class="container">
             <span class="navbar-brand" style="font-weight:600; letter-spacing:1px;">Klasifikasi Naïve Bayes</span>
             <ul class="nav navbar-nav navbar-right" style="margin-top:8px;">
-                <li><a href="index.php" style="color:#fff;">Beranda</a></li>
-                <?php if (empty($_SESSION['kepribadian_naive_bayes_id'])): ?>
-                <li><a class="menu-top-active" href="login.php" style="color:#fff;">Masuk</a></li>
-                <?php endif; ?>
+            <li><a href="index.php" style="color:#fff;">Beranda</a></li>
+            <?php if (empty($_SESSION['kepribadian_naive_bayes_id'])): ?>
+            <li><a class="menu-top-active" href="login.php" style="color:#fff;">Masuk</a></li>
+            <li><a href="signup.php" style="color:#fff;">Daftar</a></li>
+            <?php endif; ?>
             </ul>
             </div>
-        </div>
+        </div> -->
+<?php
+        include "header.php";
 
+        $menu = ''; //variable untuk menampung menu
+        if (isset($_GET['menu'])) {
+            $menu = $_GET['menu'];
+        }
+        ?>
         <!-- MENU SECTION END-->
         <div class="content-wrapper">
             <div class="container">

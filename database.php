@@ -16,7 +16,7 @@ class database {
      * fungsi construktor awal dan koneksi ke database;
      * set variable class $this->conn;
      */
-    function database() {
+    function __construct() {
         $this->load_conf_db();
         return $this->connect_db();
     }

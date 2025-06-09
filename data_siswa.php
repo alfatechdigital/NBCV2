@@ -156,6 +156,7 @@ include_once "fungsi.php";
                             <th>Usia</th>
                             <th>jurusan</th>
                             <th>Username</th>
+                            <th>opsi</th>
                             <th></th>
                         </tr>
                         <?php

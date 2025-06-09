@@ -27,6 +27,7 @@ if(isset($_GET['menu'])){
                         if (empty($_SESSION['kepribadian_naive_bayes_id'])) {
                         ?>
                             <li><a href="login.php">Masuk</a></li>
+                            <li><a href="signup.php" style="color:#fff;">Daftar</a></li>
                         <?php 
                         }
                         else{
