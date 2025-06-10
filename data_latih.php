@@ -132,7 +132,17 @@ include_once "import/excel_reader2.php";
                         <tr>
                             <td><?php echo $no; ?></td>
                             <td><?php echo htmlspecialchars($row['nama']); ?></td>
-                            <td><?php echo htmlspecialchars($row['jenis_kelamin']); ?></td>
+                            <td>
+                                <?php
+                                    if ($row['jenis_kelamin'] == 'L') {
+                                        echo 'Laki-laki';
+                                    } elseif ($row['jenis_kelamin'] == 'P') {
+                                        echo 'Perempuan';
+                                    } else {
+                                        echo htmlspecialchars($row['jenis_kelamin']);
+                                    }
+                                ?>
+                            </td>
                             <td><?php echo htmlspecialchars($row['usia']); ?></td>
                             <td><?php echo htmlspecialchars($row['jurusan']); ?></td>
                             <td><?php echo htmlspecialchars($row['jawaban_a']); ?></td>

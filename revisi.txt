@@ -1,0 +1,8 @@
+admin: data latih, data soal, data_uji + edit&hapus per item
+hasil klasifikasi>uji akurasi > presentase
+
+siswa: registrasi
+edit submit
+
+hasil uji akurasi dijadikan tabel, jadikan 3 tahap
+

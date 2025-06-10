@@ -165,7 +165,13 @@ include_once "fungsi.php";
                             echo "<tr>";
                             echo "<td>" . $no . "</td>";
                             echo "<td>" . $row['nama_siswa'] . "</td>";
-                            echo "<td>" . $row['jenis_kelamin'] . "</td>";
+                            if ($row['jenis_kelamin'] == 'L') {
+                                        echo '<td>Laki-laki</td>';
+                                    } elseif ($row['jenis_kelamin'] == 'P') {
+                                        echo '<td>Perempuan</td>';
+                                    } else {
+                                        echo htmlspecialchars($row['jenis_kelamin']);
+                                    } ;
                             echo "<td>" . $row['usia'] . "</td>";
                             echo "<td>" . $row['jurusan'] . "</td>";
                             echo "<td>" . $row['username'] . "</td>";

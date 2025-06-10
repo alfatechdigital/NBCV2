@@ -107,6 +107,7 @@ include_once "import/excel_reader2.php";
                                 <th>Pilihan B</th>
                                 <th>Pilihan C</th>
                                 <th>Pilihan D</th>
+                                <th>OPSI</th>
                             </tr>
     <?php
     $no = 1;
@@ -117,6 +118,86 @@ include_once "import/excel_reader2.php";
         echo "<td>" . $row['pilihan_b'] . "</td>";
         echo "<td>" . $row['pilihan_c'] . "</td>";
         echo "<td>" . $row['pilihan_d'] . "</td>";
+       
+        ?>
+        <td>
+        <?php
+        // Proses update data soal
+        if (isset($_POST['edit_submit'])) {
+            $edit_id = intval($_POST['edit_id']);
+            $edit_pilihan_a = $_POST['edit_pilihan_a'];
+            $edit_pilihan_b = $_POST['edit_pilihan_b'];
+            $edit_pilihan_c = $_POST['edit_pilihan_c'];
+            $edit_pilihan_d = $_POST['edit_pilihan_d'];
+
+            $sql_update = "UPDATE data_soal SET pilihan_a='$edit_pilihan_a', pilihan_b='$edit_pilihan_b', "
+                    . "pilihan_c='$edit_pilihan_c', pilihan_d='$edit_pilihan_d' WHERE id=$edit_id";
+            $db_object->db_query($sql_update);
+            echo "<script>location.replace('?menu=data_soal&pesan_success=Data berhasil diupdate');</script>";
+        }
+
+        // Proses hapus data soal satuan
+        if (isset($_POST['delete_single'])) {
+            $delete_id = intval($_POST['delete_id']);
+            $sql_delete = "DELETE FROM data_soal WHERE id = $delete_id";
+            $db_object->db_query($sql_delete);
+            echo "<script>location.replace('?menu=data_soal&pesan_success=Data berhasil dihapus');</script>";
+        }
+        ?>
+        <!-- Tombol Edit (ikon) -->
+        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#editModal<?php echo $row['id']; ?>" title="Edit">
+            <i class="fa fa-pencil"></i>
+        </button>
+        <!-- Tombol Hapus (ikon) -->
+        <form method="post" action="" style="display:inline;" onsubmit="return confirm('Yakin ingin menghapus data ini?');">
+            <input type="hidden" name="delete_id" value="<?php echo $row['id']; ?>">
+            <button type="submit" name="delete_single" class="btn btn-danger btn-sm" title="Hapus">
+            <i class="fa fa-trash"></i>
+            </button>
+        </form>
+
+        <!-- Modal Edit -->
+        <div class="modal fade" id="editModal<?php echo $row['id']; ?>" tabindex="-1" role="dialog" aria-labelledby="editModalLabel<?php echo $row['id']; ?>">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <form method="post" action="">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="editModalLabel<?php echo $row['id']; ?>">Edit Data Soal</h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="edit_id" value="<?php echo $row['id']; ?>">
+                    <div class="form-group">
+                        <label>Pilihan A</label>
+                        <input type="text" name="edit_pilihan_a" class="form-control" value="<?php echo htmlspecialchars($row['pilihan_a']); ?>" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Pilihan B</label>
+                        <input type="text" name="edit_pilihan_b" class="form-control" value="<?php echo htmlspecialchars($row['pilihan_b']); ?>" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Pilihan C</label>
+                        <input type="text" name="edit_pilihan_c" class="form-control" value="<?php echo htmlspecialchars($row['pilihan_c']); ?>" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Pilihan D</label>
+                        <input type="text" name="edit_pilihan_d" class="form-control" value="<?php echo htmlspecialchars($row['pilihan_d']); ?>" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                  <button type="submit" name="edit_submit" class="btn btn-success">Simpan</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        </td>
+        <?php
+        
         echo "</tr>";
         $no++;
     }
